@@ -1,0 +1,39 @@
+### Libraries ###
+from openpyxl import load_workbook, Workbook
+import pandas as pd
+import re
+from os import listdir
+from os.path import isfile, join
+import warnings
+warnings.simplefilter("ignore")
+
+
+### Collecting filepath
+# source = input("Input filepath for the source workbook that has the data: ")
+# master = input("Input filepath for the master workbook to be copied to: ")
+# r = 'r'
+# print("Thank you! Copying files now")
+# wb_src = load_workbook(r + source)
+# wba = load_workbook(r + master)
+
+# Having filepath
+wb_src = load_workbook("...sourcename.xlsx")
+wb_apd = load_workbook("...destinationxlsx")
+
+sheet = wb_apd.active
+
+# Appending row 1
+sheet["A2"] = wb_src["column name"]["C8"].value
+
+# Save the operation
+wb_apd.save("...destination.xlsx")
+
+
+# CSV to Excel
+read_file = pd.read_csv("..sourcename.csv")
+
+output_file = Workbook()
+output_file.save("Output Excel File")
+read_file.to_excel ("...destination.xlsx', index = None, header=True)
+
+print("Finished")
