@@ -1,0 +1,45 @@
+### Libraries ###
+import pyttsx3, PyPDF2
+from openpyxl import load_workbook
+import re
+from IPython.display import Audio
+
+import warnings
+warnings.simplefilter("ignore")
+
+
+# Load PDF file, convert to audio and play
+pdfreader = PyPDF2.PdfReader(open("...sourcename.pdf", "rb"))
+speaker = pyttsx3.init()
+
+for page_num in range(len(pdfreader.pages)):
+    text = pdfreader.pages[page_num].extract_text()
+    clean_text = text.strip().replace("\n", " ")
+    print(clean_text)
+
+speaker.save_to_file(clean_text, "pdf_audio.mp3")
+speaker.runAndWait()
+
+speaker.stop()
+
+Audio("pdf_audio.mp3")
+
+
+
+# Load Excel file, convert to audio and play
+wb = load_workbook("...sourcename.xlsx")
+speaker = pyttsx3.init()
+
+sheet = wb.active
+
+text = str([cell.value for cell in sheet["A"] if cell.value is not None])
+
+clean_text = re.sub(',', '', text)
+clean_text = re.sub(',{2,}', ',', clean_text)
+print(clean_text)
+
+speaker.save_to_file(clean_text, "xlsx_audio.mp3")
+speaker.runAndWait()
+speaker.stop()
+
+Audio("xlsx_audio.mp3")
